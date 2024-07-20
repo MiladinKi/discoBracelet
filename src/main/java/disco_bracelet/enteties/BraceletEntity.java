@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 import jakarta.persistence.CascadeType;
@@ -14,6 +16,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -26,24 +29,25 @@ public class BraceletEntity {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy")
 	private LocalDate yearOfProduction;
 
-	@OneToOne(mappedBy = "bracelet", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	private UserEntity user;
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JsonIgnoreProperties("bracelet")
+	private GuestEntity guest;
 
 	@OneToMany(mappedBy = "bracelet", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JsonIgnore
+	@JsonIgnoreProperties("bracelet")
 	private List<DrinkEntity> drinks = new ArrayList<>();
 
 	public BraceletEntity() {
 		super();
 	}
 
-	public BraceletEntity(Integer id, String manufacturer, LocalDate yearOfProduction, UserEntity user,
+	public BraceletEntity(Integer id, String manufacturer, LocalDate yearOfProduction, GuestEntity guest,
 			List<DrinkEntity> drinks) {
 		super();
 		this.id = id;
 		this.manufacturer = manufacturer;
 		this.yearOfProduction = yearOfProduction;
-		this.user = user;
+		this.guest = guest;
 		this.drinks = drinks;
 	}
 
@@ -71,12 +75,12 @@ public class BraceletEntity {
 		this.yearOfProduction = yearOfProduction;
 	}
 
-	public UserEntity getUser() {
-		return user;
+	public GuestEntity getGuest() {
+		return guest;
 	}
 
-	public void setUser(UserEntity user) {
-		this.user = user;
+	public void setGuest(GuestEntity guest) {
+		this.guest = guest;
 	}
 
 	public List<DrinkEntity> getDrinks() {
@@ -86,5 +90,6 @@ public class BraceletEntity {
 	public void setDrinks(List<DrinkEntity> drinks) {
 		this.drinks = drinks;
 	}
+
 
 }

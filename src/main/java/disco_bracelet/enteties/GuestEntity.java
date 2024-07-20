@@ -1,5 +1,8 @@
 package disco_bracelet.enteties;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +17,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-public class UserEntity {
+public class GuestEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
@@ -32,14 +35,15 @@ public class UserEntity {
 	private Long phoneNumber;
 
 	@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JoinColumn(name = "bracelet")
+	@JoinColumn(name = "bracelet_id")
+	@JsonIgnore
 	private BraceletEntity bracelet;
 
-	public UserEntity() {
+	public GuestEntity() {
 		super();
 	}
 
-	public UserEntity(Integer id,
+	public GuestEntity(Integer id,
 			@NotNull(message = "Name must be provided!") @Size(min = 2, max = 20, message = "Name must be between {min} and {max} characters long!") String name,
 			@NotNull(message = "Lastname must be provided!") @Size(min = 2, max = 20, message = "Lastname must be between {min} and {max} characters long") String lastname,
 			@NotNull(message = "Id document must be provided") @Digits(integer = 13, fraction = 0, message = "Personal ID must have exactly 13 digits") Long idDocument,

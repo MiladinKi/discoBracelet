@@ -3,11 +3,9 @@ package disco_bracelet.repositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import disco_bracelet.enteties.BraceletEntity;
+import disco_bracelet.enteties.WaiterEntity;
 
-
-public interface BraceletRepository extends CrudRepository<BraceletEntity, Integer> {
-	
-
+@Repository
+public interface WaiterRepository extends CrudRepository<WaiterEntity, Integer> {
 
 }
