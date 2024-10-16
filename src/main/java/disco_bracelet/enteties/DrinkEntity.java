@@ -33,6 +33,8 @@ public class DrinkEntity {
 	@NotNull(message = "Volume of drink must be provided!")
 	private Double volume;
 
+	private String drinkImage;
+
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinColumn(name = "bracelet_id")
 	@JsonIgnoreProperties("drinks")
@@ -54,14 +56,15 @@ public class DrinkEntity {
 	public DrinkEntity(Integer id, @NotNull(message = "Name of drink must be provided!") String name,
 			@NotNull(message = "Price of drink must be provided!") Double price,
 			@NotNull(message = "Manufacturer of drink must be provided!") String manufacturer,
-			@NotNull(message = "Volume of drink must be provided!") Double volume, BraceletEntity bracelet,
-			WaiterEntity waiter, List<WaiterDrinkEntity> waiterDrinks) {
+			@NotNull(message = "Volume of drink must be provided!") Double volume, String drinkImage,
+			BraceletEntity bracelet, WaiterEntity waiter, List<WaiterDrinkEntity> waiterDrinks) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.manufacturer = manufacturer;
 		this.volume = volume;
+		this.drinkImage = drinkImage;
 		this.bracelet = bracelet;
 		this.waiter = waiter;
 		this.waiterDrinks = waiterDrinks;
@@ -129,6 +132,14 @@ public class DrinkEntity {
 
 	public void setWaiterDrinks(List<WaiterDrinkEntity> waiterDrinks) {
 		this.waiterDrinks = waiterDrinks;
+	}
+
+	public String getDrinkImage() {
+		return drinkImage;
+	}
+
+	public void setDrinkImage(String drinkImage) {
+		this.drinkImage = drinkImage;
 	}
 
 }

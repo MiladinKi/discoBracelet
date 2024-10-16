@@ -21,16 +21,17 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BraceletEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String manufacturer;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate yearOfProduction;
 
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-	@JsonIgnoreProperties("bracelet")
+	@JsonIgnore
 	private GuestEntity guest;
 
 	@OneToMany(mappedBy = "bracelet", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
