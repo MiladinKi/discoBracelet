@@ -18,7 +18,7 @@ public class GuestMapper {
 		if (guest.getBracelet() != null) {
 			BraceletDTO braceletDTO = new BraceletDTO();
 			braceletDTO.setId(guest.getBracelet().getId());
-			braceletDTO.setManufacturer(guest.getBracelet().getManufacturer());
+			braceletDTO.setBarCode(guest.getBracelet().getBarCode());
 			braceletDTO.setYearOfProduction(guest.getBracelet().getYearOfProduction());
 			guestdto.setBracelet(braceletDTO);
 		}
@@ -37,7 +37,7 @@ public class GuestMapper {
 		if (guestDTO.getBracelet() != null) {
 			BraceletEntity braceletEntity = new BraceletEntity();
 			braceletEntity.setId(guestDTO.getBracelet().getId());
-			braceletEntity.setManufacturer(guestDTO.getBracelet().getManufacturer());
+			braceletEntity.setBarCode(guestDTO.getBracelet().getBarCode());
 			braceletEntity.setYearOfProduction(guestDTO.getBracelet().getYearOfProduction());
 			guestEntity.setBracelet(braceletEntity);
 		}

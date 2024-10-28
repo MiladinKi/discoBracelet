@@ -26,7 +26,7 @@ public class BraceletEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	private String manufacturer;
+	private String barCode;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate yearOfProduction;
 
@@ -39,14 +39,11 @@ public class BraceletEntity {
 	private List<DrinkEntity> drinks = new ArrayList<>();
 
 	public BraceletEntity() {
-		super();
 	}
 
-	public BraceletEntity(Integer id, String manufacturer, LocalDate yearOfProduction, GuestEntity guest,
-			List<DrinkEntity> drinks) {
-		super();
+	public BraceletEntity(Integer id, String barCode, LocalDate yearOfProduction, GuestEntity guest, List<DrinkEntity> drinks) {
 		this.id = id;
-		this.manufacturer = manufacturer;
+		this.barCode = barCode;
 		this.yearOfProduction = yearOfProduction;
 		this.guest = guest;
 		this.drinks = drinks;
@@ -60,12 +57,12 @@ public class BraceletEntity {
 		this.id = id;
 	}
 
-	public String getManufacturer() {
-		return manufacturer;
+	public String getBarCode() {
+		return barCode;
 	}
 
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
 	}
 
 	public LocalDate getYearOfProduction() {
@@ -91,6 +88,4 @@ public class BraceletEntity {
 	public void setDrinks(List<DrinkEntity> drinks) {
 		this.drinks = drinks;
 	}
-
-
 }

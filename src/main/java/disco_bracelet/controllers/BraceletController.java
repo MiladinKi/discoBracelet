@@ -1,5 +1,6 @@
 package disco_bracelet.controllers;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
+import com.google.zxing.WriterException;
+import disco_bracelet.services.BraceletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,11 +72,14 @@ public class BraceletController {
 	@Autowired
 	private SalesHistoryRepository salesHistoryRepository;
 
+	@Autowired
+	private BraceletService braceletService;
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> addBracelet(@Valid @RequestBody BraceletEntity bracelet) {
 		try {
 			BraceletEntity newBracelet = new BraceletEntity();
-			newBracelet.setManufacturer(bracelet.getManufacturer());
+			newBracelet.setBarCode(bracelet.getBarCode());
 			newBracelet.setYearOfProduction(bracelet.getYearOfProduction());
 			braceletRepository.save(newBracelet);
 			return new ResponseEntity<>(newBracelet, HttpStatus.CREATED);
@@ -81,6 +87,16 @@ public class BraceletController {
 			return new ResponseEntity<>(new RESTError(1, "Exception occured" + e.getMessage()), HttpStatus.BAD_REQUEST);
 		}
 
+	}
+
+	@RequestMapping(method = RequestMethod.POST, path = "/generate")
+	public ResponseEntity<?> generateBracelet(@RequestBody BraceletDTO request) throws IOException {
+	try {
+		BraceletEntity newBracelet = braceletService.createNewBracelet(request.getYearOfProduction());
+		return new ResponseEntity<>(newBracelet, HttpStatus.CREATED);
+	} catch (WriterException e) {
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/{braceletId}")
@@ -176,7 +192,7 @@ public class BraceletController {
 			List<BraceletDTO> braceletDTOs = bracelets.stream().map(bracelet -> {
 				BraceletDTO dto = new BraceletDTO();
 				dto.setId(bracelet.getId());
-				dto.setManufacturer(bracelet.getManufacturer());
+				dto.setBarCode(bracelet.getBarCode());
 				dto.setYearOfProduction(bracelet.getYearOfProduction());
 
 				if (bracelet.getGuest() != null) {
@@ -244,7 +260,7 @@ public class BraceletController {
 			Optional<BraceletEntity> braceletOpt = braceletRepository.findById(braceletId);
 			if (braceletOpt.isPresent()) {
 				BraceletEntity bracelet = braceletOpt.get();
-				bracelet.setManufacturer(updatedBracelet.getManufacturer());
+				bracelet.setBarCode(updatedBracelet.getBarCode());
 				bracelet.setYearOfProduction(updatedBracelet.getYearOfProduction());
 				braceletRepository.save(bracelet);
 				return new ResponseEntity<>(bracelet, HttpStatus.OK);

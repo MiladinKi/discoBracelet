@@ -5,7 +5,7 @@ import java.util.List;
 
 public class BraceletDTO {
 	private Integer id;
-	private String manufacturer;
+	private String barCode;
 	private LocalDate yearOfProduction;
 	private List<DrinkDTO> drinks;
 
@@ -13,10 +13,10 @@ public class BraceletDTO {
 		super();
 	}
 
-	public BraceletDTO(Integer id, String manufacturer, LocalDate yearOfProduction, List<DrinkDTO> drinks) {
+	public BraceletDTO(Integer id, String barCode, LocalDate yearOfProduction, List<DrinkDTO> drinks) {
 		super();
 		this.id = id;
-		this.manufacturer = manufacturer;
+		this.barCode = barCode;
 		this.yearOfProduction = yearOfProduction;
 		this.drinks = drinks;
 	}
@@ -29,12 +29,12 @@ public class BraceletDTO {
 		this.id = id;
 	}
 
-	public String getManufacturer() {
-		return manufacturer;
+	public String getBarCode() {
+		return barCode;
 	}
 
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
 	}
 
 	public LocalDate getYearOfProduction() {
@@ -52,5 +52,6 @@ public class BraceletDTO {
 	public void setDrinks(List<DrinkDTO> drinks) {
 		this.drinks = drinks;
 	}
+
 
 }

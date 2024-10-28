@@ -20,7 +20,7 @@ public class BraceletMapper {
 
 	        return new BraceletDTO(
 	            bracelet.getId(),
-	            bracelet.getManufacturer(),
+	            bracelet.getBarCode(),
 	            bracelet.getYearOfProduction(),
 	            drinkDTOs
 	        );
