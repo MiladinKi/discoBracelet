@@ -2,18 +2,24 @@ package disco_bracelet.enteties.dtoes;
 
 
 
+
+
 public class DrinkRequest {
 	private Integer drinkId;
 	private Integer quantity;
+
+	private String barCode;
 
 	public DrinkRequest() {
 		super();
 	}
 
-	public DrinkRequest(Integer drinkId, Integer quantity) {
-		super();
-		this.drinkId = drinkId;
-		this.quantity = quantity;
+	public String getBarCode() {
+		return barCode;
+	}
+
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
 	}
 
 	public Integer getDrinkId() {

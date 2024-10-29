@@ -6,18 +6,18 @@ public class BraceletDrinkDTO {
 	private Double drinkPrice;
 	private Integer quantity = 1;
 	private Integer braceletId;
+	private String barCode;
 
 	public BraceletDrinkDTO() {
 	}
 
-	public BraceletDrinkDTO(Integer drinkId, String drinkName, Double drinkPrice, Integer quantity,
-			Integer braceletId) {
-		super();
+	public BraceletDrinkDTO(Integer drinkId, String drinkName, Double drinkPrice, Integer quantity, Integer braceletId, String barCode) {
 		this.drinkId = drinkId;
 		this.drinkName = drinkName;
 		this.drinkPrice = drinkPrice;
 		this.quantity = quantity;
 		this.braceletId = braceletId;
+		this.barCode = barCode;
 	}
 
 	public Integer getDrinkId() {
@@ -60,4 +60,11 @@ public class BraceletDrinkDTO {
 		this.braceletId = braceletId;
 	}
 
+	public String getBarCode() {
+		return barCode;
+	}
+
+	public void setBarCode(String barCode) {
+		this.barCode = barCode;
+	}
 }

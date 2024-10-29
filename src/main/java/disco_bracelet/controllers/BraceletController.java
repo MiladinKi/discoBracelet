@@ -2,7 +2,6 @@ package disco_bracelet.controllers;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import aj.org.objectweb.asm.commons.Method;
 import disco_bracelet.controllers.utils.RESTError;
 import disco_bracelet.enteties.BraceletDrinkEntity;
 import disco_bracelet.enteties.BraceletEntity;
@@ -32,7 +30,6 @@ import disco_bracelet.enteties.WaiterEntity;
 import disco_bracelet.enteties.dtoes.BraceletDTO;
 import disco_bracelet.enteties.dtoes.BraceletDrinkDTO;
 import disco_bracelet.enteties.dtoes.GuestDTO;
-import disco_bracelet.mappers.BraceletMapper;
 import disco_bracelet.mappers.GuestMapper;
 import disco_bracelet.repositories.BraceletDrinkRepository;
 import disco_bracelet.repositories.BraceletRepository;
@@ -75,19 +72,19 @@ public class BraceletController {
 	@Autowired
 	private BraceletService braceletService;
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addBracelet(@Valid @RequestBody BraceletEntity bracelet) {
-		try {
-			BraceletEntity newBracelet = new BraceletEntity();
-			newBracelet.setBarCode(bracelet.getBarCode());
-			newBracelet.setYearOfProduction(bracelet.getYearOfProduction());
-			braceletRepository.save(newBracelet);
-			return new ResponseEntity<>(newBracelet, HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new RESTError(1, "Exception occured" + e.getMessage()), HttpStatus.BAD_REQUEST);
-		}
-
-	}
+//	@RequestMapping(method = RequestMethod.POST)
+//	public ResponseEntity<?> addBracelet(@Valid @RequestBody BraceletEntity bracelet) {
+//		try {
+//			BraceletEntity newBracelet = new BraceletEntity();
+//			newBracelet.setBarCode(bracelet.getBarCode());
+//			newBracelet.setYearOfProduction(bracelet.getYearOfProduction());
+//			braceletRepository.save(newBracelet);
+//			return new ResponseEntity<>(newBracelet, HttpStatus.CREATED);
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(new RESTError(1, "Exception occured" + e.getMessage()), HttpStatus.BAD_REQUEST);
+//		}
+//
+//	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/generate")
 	public ResponseEntity<?> generateBracelet(@RequestBody BraceletDTO request) throws IOException {
@@ -407,7 +404,7 @@ public class BraceletController {
 
 	         List<BraceletDrinkDTO> dtoList = braceletDrinks.stream()
 	                 .map(bd -> new BraceletDrinkDTO(bd.getDrink().getId(), bd.getDrink().getName(),
-	                         bd.getDrink().getPrice(), bd.getQuantity(), bracelet.getId()))
+	                         bd.getDrink().getPrice(), bd.getQuantity(), bracelet.getId(), bracelet.getBarCode()))
 	                 .collect(Collectors.toList());
 
 	         return new ResponseEntity<>(dtoList, HttpStatus.OK);
@@ -432,7 +429,7 @@ public class BraceletController {
 
 	         for (BraceletDrinkDTO assignment : drinkAssignments) {
 	             DrinkEntity drink = drinkRepository.findById(assignment.getDrinkId()).orElse(null);
-	             BraceletEntity bracelet = braceletRepository.findById(assignment.getBraceletId()).orElse(null);
+	             Optional<BraceletEntity> bracelet = braceletRepository.findByBarCode(assignment.getBarCode());
 
 	             if (drink == null) {
 	                 return new ResponseEntity<>("Drink with ID " + assignment.getDrinkId() + " not found",
@@ -440,7 +437,7 @@ public class BraceletController {
 	             }
 
 	             if (bracelet == null) {
-	                 return new ResponseEntity<>("Bracelet with ID " + assignment.getBraceletId() + " not found",
+	                 return new ResponseEntity<>("Bracelet with BarCode " + assignment.getBarCode() + " not found",
 	                         HttpStatus.NOT_FOUND);
 	             }
 
@@ -463,10 +460,10 @@ public class BraceletController {
 	             salesHistoryRepository.save(salesHistory);
 
 	             // Ažuriranje stanja na narukvici
-	             BraceletDrinkEntity braceletDrink = braceletDrinkRepository.findByBraceletAndDrink(bracelet, drink);
+	             BraceletDrinkEntity braceletDrink = braceletDrinkRepository.findByBraceletAndDrink(bracelet.orElse(null), drink);
 	             if (braceletDrink == null) {
 	                 braceletDrink = new BraceletDrinkEntity();
-	                 braceletDrink.setBracelet(bracelet);
+	                 braceletDrink.setBracelet(bracelet.orElse(null));
 	                 braceletDrink.setDrink(drink);
 	                 braceletDrink.setQuantity(assignment.getQuantity());
 	             } else {
